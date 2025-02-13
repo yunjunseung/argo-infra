@@ -1,0 +1,42 @@
+[
+  {
+    "op": "replace",
+    "path": "/spec/strategy",
+    "value": {
+      "canary": {
+        "maxSurge": "10%",
+        "maxUnavailable": 0,
+        "steps": [
+          {
+            "setWeight": 1
+          },
+          {
+            "pause": {}
+          },
+          {
+            "setWeight": 30
+          },
+          {
+            "pause": {}
+          },
+          {
+            "setWeight": 70
+          },
+          {
+            "pause": {}
+          }
+        ]
+      }
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/kind",
+    "value": "Rollout"
+  },
+  {
+    "op": "replace",
+    "path": "/apiVersion",
+    "value": "argoproj.io/v1alpha1"
+  }
+]

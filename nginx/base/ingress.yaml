@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-prd
+  namespace: prd
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      gzip on;
+      server_tokens off;
+      proxy_hide_header X-Powered-By;
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: nginxinfra.mezzomedia.co.kr
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - nginxinfra.mezzomedia.co.kr
+    secretName: mezzo-tls-secret

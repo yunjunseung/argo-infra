@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+patches:
+- path: hpa.yaml
+- path: deployment.yaml
+- path: transform_to_rollout.json
+  target:
+    group: apps
+    kind: Deployment
+    name: nginx
+    version: v1
+
+
+images:
+- name: nginx
+  newName: harborinfra.mezzomedia.co.kr/infra/nginx/stg
+  newTag: "77"
+
+resources:
+- ../base

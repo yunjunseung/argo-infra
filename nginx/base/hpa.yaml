@@ -1,0 +1,57 @@
+# HorizontalPodAutoscaler API 버전 지정
+apiVersion: autoscaling/v2
+
+# HorizontalPodAutoscaler 객체 정의
+kind: HorizontalPodAutoscaler
+
+# HorizontalPodAutoscaler의 메타데이터 정의
+metadata:
+  # HPA의 이름과 네임스페이스 지정
+  name: nginx-hpa
+  namespace: prd
+
+# HorizontalPodAutoscaler의 원하는 상태 지정
+spec:
+  # 조절 대상 지정
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx
+
+  # 최소 및 최대 복제본 수 지정
+  minReplicas: 1
+  maxReplicas: 100
+
+  # 사용할 메트릭 정의
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+
+  # 크기 조절 동작 정의
+  behavior:
+    # 축소 동작 정의
+    scaleDown:
+      stabilizationWindowSeconds: 180
+      policies:
+        - type: Pods
+          value: 4
+          periodSeconds: 60
+        - type: Percent
+          value: 10
+          periodSeconds: 60
+      selectPolicy: Min
+
+    # 확장 동작 정의
+    scaleUp:
+      policies:
+        - type: Percent
+          value: 30
+          periodSeconds: 30
+        - type: Pods
+          value: 8
+          periodSeconds: 30
+      selectPolicy: Max
