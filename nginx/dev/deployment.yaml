@@ -1,0 +1,19 @@
+# deployment.yaml (아직 없음)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx  # kustomization.yaml이 이 이미지를 업데이트
+        ports:
+        - containerPort: 80
