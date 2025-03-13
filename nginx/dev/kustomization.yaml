@@ -6,4 +6,4 @@ resources:
 images:
 - name: nginx
   newName: harbor.yunjunseung.shop/infra/nginx/dev
-  newTag: "9"
+  newTag: "10"
